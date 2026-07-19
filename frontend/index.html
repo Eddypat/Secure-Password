@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cipherkeep — Secure Password-Based Encryption</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="grain"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">&#9670;</span>
+    <span class="brand-name">CIPHERKEEP</span>
+  </div>
+  <div class="topbar-sub">AES&#8209;256&#8209;GCM &nbsp;/&nbsp; PBKDF2&#8209;HMAC&#8209;SHA256</div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <p class="eyebrow">Seminar Project &mdash; Applied Cryptography</p>
+    <h1>Lock it with a word you<br>already remember.</h1>
+    <p class="hero-copy">Cipherkeep turns an ordinary password into a 256&#8209;bit vault key, then seals your
+      text or files behind authenticated AES&#8209;256&#8209;GCM encryption. Nothing you type is stored, logged,
+      or sent anywhere beyond this one exchange.</p>
+  </section>
+
+  <section class="panel" id="panel">
+
+    <div class="mode-row">
+      <div class="seg" id="dataModeSeg">
+        <button class="seg-btn active" data-datamode="text">Text</button>
+        <button class="seg-btn" data-datamode="file">File</button>
+      </div>
+      <div class="seg" id="opModeSeg">
+        <button class="seg-btn active" data-opmode="encrypt">Encrypt</button>
+        <button class="seg-btn" data-opmode="decrypt">Decrypt</button>
+      </div>
+    </div>
+
+    <!-- TEXT INPUT -->
+    <div class="field" id="textField">
+      <label id="textLabel" for="textInput">Plaintext to seal</label>
+      <textarea id="textInput" rows="6" placeholder="Type or paste the message you want to protect&hellip;"></textarea>
+    </div>
+
+    <!-- FILE INPUT -->
+    <div class="field hidden" id="fileField">
+      <label>File</label>
+      <label class="dropzone" id="dropzone" for="fileInput">
+        <span class="dz-icon">&#8681;</span>
+        <span class="dz-text" id="dzText">Choose a file, or drop it here</span>
+        <input type="file" id="fileInput" hidden />
+      </label>
+    </div>
+
+    <!-- PASSWORD -->
+    <div class="field">
+      <label for="passwordInput">Password</label>
+      <div class="pw-row">
+        <input type="password" id="passwordInput" placeholder="Your vault password" autocomplete="off" />
+        <button type="button" class="pw-toggle" id="pwToggle" aria-label="Show password">&#128065;</button>
+      </div>
+      <div class="strength" id="strengthWrap">
+        <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+        <span class="strength-label" id="strengthLabel">&nbsp;</span>
+      </div>
+      <ul class="strength-tips" id="strengthTips"></ul>
+    </div>
+
+    <button class="go-btn" id="goBtn">
+      <span id="goBtnLabel">Encrypt</span>
+    </button>
+
+    <div class="status hidden" id="statusBox"></div>
+
+    <!-- RESULT -->
+    <div class="field result hidden" id="resultField">
+      <label id="resultLabel">Result</label>
+      <textarea id="resultOutput" rows="6" readonly></textarea>
+      <div class="result-actions">
+        <button class="ghost-btn" id="copyBtn">Copy to clipboard</button>
+        <span class="copied hidden" id="copiedTag">Copied &#10003;</span>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="howitworks">
+    <h2>What happens when you press Encrypt</h2>
+    <div class="steps">
+      <div class="step">
+        <span class="step-no">01</span>
+        <h3>Salt &amp; derive</h3>
+        <p>A random 16&#8209;byte salt is generated and combined with your password through 480,000 rounds of PBKDF2&#8209;HMAC&#8209;SHA256, producing a 256&#8209;bit key.</p>
+      </div>
+      <div class="step">
+        <span class="step-no">02</span>
+        <h3>Seal with AES&#8209;GCM</h3>
+        <p>The derived key and a fresh 12&#8209;byte nonce encrypt your data with AES&#8209;256 in Galois/Counter Mode, producing ciphertext plus an authentication tag.</p>
+      </div>
+      <div class="step">
+        <span class="step-no">03</span>
+        <h3>Package &amp; verify</h3>
+        <p>Salt, nonce, ciphertext and tag are bundled and Base64&#8209;encoded. On decryption, a wrong password or altered byte makes the tag check fail &mdash; loudly, not silently.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <p>Cipherkeep &middot; built for the seminar project &ldquo;Design and Implementation of a Secure Password&#8209;Based Encryption and Decryption System&rdquo; &middot; Flask + Python cryptography backend</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
